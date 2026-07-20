@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Check, Copy, ExternalLink, LineChart, ShoppingCart } from "lucide-react";
-import jimothy from "@/assets/jimothy.png";
+import jimothy from "@/assets/jimothy-token.jpg.asset.json";
 
 const CA = "Ge87EtsjwRQbHaqQmKRno69RFTwh9bfSsm99XNxTpump";
 const PUMP_URL = `https://pump.fun/coin/${CA}`;
