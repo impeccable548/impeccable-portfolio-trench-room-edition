@@ -10,7 +10,7 @@ const DEX_URL = `https://dexscreener.com/solana/${CA}`;
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { property: "og:image", content: "https://id-preview--4adbab71-1ee3-416f-a2a9-466d15fd42be.lovable.app/og.png" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/7a6ab4c3-29bd-471e-81cd-0c1d6132b99e" },
     ],
   }),
   component: Index,
