@@ -156,7 +156,7 @@ function Index() {
               <div className="relative mx-auto w-full max-w-md">
                 <div className="brut-border-4 brut-shadow-lg bg-accent-orange p-2 animate-wobble">
                   <img
-                    src={jimothy}
+                    src={jimothy.url}
                     alt="Jimothy the raccoon mascot"
                     width={1024}
                     height={1024}
