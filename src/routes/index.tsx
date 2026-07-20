@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Check, Copy, ExternalLink, LineChart, ShoppingCart } from "lucide-react";
-import jimothy from "@/assets/jimothy.png";
+import jimothy from "@/assets/jimothy-token.jpg.asset.json";
 
 const CA = "Ge87EtsjwRQbHaqQmKRno69RFTwh9bfSsm99XNxTpump";
 const PUMP_URL = `https://pump.fun/coin/${CA}`;
@@ -156,7 +156,7 @@ function Index() {
               <div className="relative mx-auto w-full max-w-md">
                 <div className="brut-border-4 brut-shadow-lg bg-accent-orange p-2 animate-wobble">
                   <img
-                    src={jimothy}
+                    src={jimothy.url}
                     alt="Jimothy the raccoon mascot"
                     width={1024}
                     height={1024}
