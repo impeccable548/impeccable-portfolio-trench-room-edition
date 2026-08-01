@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Check, Copy, ExternalLink, LineChart, ShoppingCart, Users } from "lucide-react";
-import mascot from "@/assets/calldog-mascot.jpg";
+import mascot from "@/assets/calldog-mascot.jpg.asset.json";
 
 const CA = "AF2DcASwJcXPUGtJhXsmHZupFh9BargcehnxiD8GVbd8";
 const PAIR = "J3KKzfyLQ7MYjFvayKGgCDtxbPYRfhPcynEXPcu3eYGS";
