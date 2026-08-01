@@ -1,20 +1,39 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Check, Copy, ExternalLink, LineChart, ShoppingCart } from "lucide-react";
-import jimothy from "@/assets/jimothy-token.jpg.asset.json";
+import { Check, Copy, ExternalLink, LineChart, ShoppingCart, Users } from "lucide-react";
+import mascot from "@/assets/calldog-mascot.jpg";
 
-const CA = "Ge87EtsjwRQbHaqQmKRno69RFTwh9bfSsm99XNxTpump";
+const CA = "AF2DcASwJcXPUGtJhXsmHZupFh9BargcehnxiD8GVbd8";
+const PAIR = "J3KKzfyLQ7MYjFvayKGgCDtxbPYRfhPcynEXPcu3eYGS";
 const PUMP_URL = `https://pump.fun/coin/${CA}`;
-const DEX_URL = `https://dexscreener.com/solana/${CA}`;
+const DEX_URL = `https://dexscreener.com/solana/${PAIR}`;
+const X_URL = "https://x.com/CallDogONSOLANA";
+const OG_IMAGE = `https://dexscreener.com/token-images/og/solana/${CA}`;
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/7a6ab4c3-29bd-471e-81cd-0c1d6132b99e" },
+      { title: "$CALLDOG — Hello Yes This Is Dog" },
+      { name: "description", content: "The dog-themed community coin on Solana. Live chart, verified contract, real-time stats and a loud 1300+ member X community." },
+      { property: "og:title", content: "$CALLDOG — Hello Yes This Is Dog" },
+      { property: "og:description", content: "The dog-themed community coin on Solana. Live chart, verified contract, real-time stats and a loud 1300+ member X community." },
+      { property: "og:image", content: OG_IMAGE },
+      { name: "twitter:image", content: OG_IMAGE },
     ],
   }),
   component: Index,
 });
+
+type Pair = {
+  priceUsd?: string;
+  marketCap?: number;
+  fdv?: number;
+  liquidity?: { usd?: number };
+  volume?: { h24?: number };
+  priceChange?: { h24?: number };
+  txns?: { h24?: { buys: number; sells: number } };
+};
 
 function useCopy(value: string) {
   const [copied, setCopied] = useState(false);
@@ -58,9 +77,29 @@ function Reveal({ children, delay = 0, className = "" }: { children: React.React
   );
 }
 
+const usd = (n?: number) =>
+  typeof n === "number"
+    ? "$" + (n >= 1_000_000 ? (n / 1_000_000).toFixed(2) + "M" : n >= 1000 ? (n / 1000).toFixed(1) + "K" : n.toFixed(0))
+    : "—";
+
+function useTokenStats() {
+  return useQuery({
+    queryKey: ["calldog-stats"],
+    queryFn: async (): Promise<Pair | null> => {
+      const res = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${CA}`);
+      if (!res.ok) throw new Error("failed");
+      const json = (await res.json()) as { pairs?: Pair[] };
+      return json.pairs?.[0] ?? null;
+    },
+    refetchInterval: 30_000,
+    staleTime: 15_000,
+  });
+}
+
 function Index() {
   const { copied, copy } = useCopy(CA);
   const [scrolled, setScrolled] = useState(false);
+  const { data, isLoading } = useTokenStats();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -70,25 +109,24 @@ function Index() {
   }, []);
 
   const shortCA = `${CA.slice(0, 6)}…${CA.slice(-6)}`;
+  const change = data?.priceChange?.h24;
+  const price = data?.priceUsd ? `$${Number(data.priceUsd).toPrecision(3)}` : "—";
+  const txns = data?.txns?.h24 ? data.txns.h24.buys + data.txns.h24.sells : undefined;
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans">
       {/* NAV */}
-      <nav
-        className={`sticky top-0 z-50 border-b-[3px] border-charcoal bg-cream transition-shadow ${
-          scrolled ? "brut-shadow-sm" : ""
-        }`}
-      >
+      <nav className={`sticky top-0 z-50 border-b-[3px] border-charcoal bg-cream transition-shadow ${scrolled ? "brut-shadow-sm" : ""}`}>
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 md:px-8">
           <a href="#top" className="flex items-center gap-2">
-            <div className="brut-border h-9 w-9 bg-accent-orange flex items-center justify-center font-display text-charcoal">J</div>
-            <span className="font-display text-lg tracking-tight">$JIMOTHY</span>
+            <div className="brut-border h-9 w-9 bg-accent-orange flex items-center justify-center font-display text-charcoal">C</div>
+            <span className="font-display text-lg tracking-tight">$CALLDOG</span>
           </a>
 
           <div className="hidden md:flex items-center gap-6 font-mono text-sm">
             <a href="#chart" className="hover:text-accent-orange transition-colors">Chart</a>
             <a href="#contract" className="hover:text-accent-orange transition-colors">Contract</a>
-            <a href="#story" className="hover:text-accent-orange transition-colors">Story</a>
+            <a href="#stats" className="hover:text-accent-orange transition-colors">Stats</a>
             <a href="#community" className="hover:text-accent-orange transition-colors">Community</a>
           </div>
 
@@ -109,22 +147,20 @@ function Index() {
           <div className="md:col-span-3">
             <Reveal>
               <div className="brut-border inline-flex items-center gap-2 bg-cream px-3 py-1 font-mono text-xs uppercase tracking-widest">
-                <span className="inline-block h-2 w-2 bg-accent-orange" /> Live on Solana
+                <span className="inline-block h-2 w-2 bg-accent-orange animate-pulse" /> Live on Solana
               </div>
             </Reveal>
             <Reveal delay={80}>
-              <h1 className="mt-6 font-display text-[16vw] leading-[0.85] tracking-tight md:text-[10rem]">
-                $JIMOTHY
-              </h1>
+              <h1 className="mt-6 font-display text-[15vw] leading-[0.85] tracking-tight md:text-[9rem]">$CALLDOG</h1>
             </Reveal>
             <Reveal delay={160}>
               <p className="mt-6 max-w-xl font-display text-2xl leading-tight md:text-4xl">
-                The Raccoon That <span className="bg-accent-orange px-2">Broke</span> The Internet.
+                Hello Yes <span className="bg-accent-orange px-2">This Is Dog</span>.
               </p>
             </Reveal>
             <Reveal delay={220}>
               <p className="mt-5 max-w-lg font-sans text-base text-brown-dark md:text-lg">
-                A short king from Seattle. A spine like a stack of pancakes. Now, a coin.
+                One dog. One number. A pack that never stops calling. No roadmap, no promises — just the loudest community on Solana.
               </p>
             </Reveal>
             <Reveal delay={280}>
@@ -155,19 +191,13 @@ function Index() {
             <Reveal delay={120}>
               <div className="relative mx-auto w-full max-w-md">
                 <div className="brut-border-4 brut-shadow-lg bg-accent-orange p-2 animate-wobble">
-                  <img
-                    src={jimothy.url}
-                    alt="Jimothy the raccoon mascot"
-                    width={1024}
-                    height={1024}
-                    className="block h-auto w-full"
-                  />
+                  <img src={mascot} alt="CALLDOG mascot" width={1024} height={1024} className="block h-auto w-full" />
                 </div>
                 <div className="brut-border absolute -bottom-4 -left-4 bg-charcoal px-3 py-1 font-mono text-xs text-cream rotate-[-4deg]">
-                  short king
+                  good boy
                 </div>
                 <div className="brut-border absolute -top-4 -right-4 bg-cream px-3 py-1 font-mono text-xs rotate-[6deg]">
-                  ↑ 1000000%
+                  {typeof change === "number" ? `${change > 0 ? "↑" : "↓"} ${Math.abs(change).toFixed(1)}% 24h` : "on chain"}
                 </div>
               </div>
             </Reveal>
@@ -179,7 +209,7 @@ function Index() {
           <div className="flex whitespace-nowrap animate-marquee font-display text-cream text-2xl">
             {Array.from({ length: 2 }).map((_, i) => (
               <div key={i} className="flex shrink-0 items-center">
-                {["SHORT KING", "STOCKY BOI", "SEATTLE LEGEND", "SOLANA MEME", "NO ROADMAP JUST VIBES", "THE RACCOON"].map((t) => (
+                {["CALL THE DOG", "WOOF ON SOL", "COMMUNITY OWNED", "NO ROADMAP JUST BARK", "1300+ PACK", "$CALLDOG"].map((t) => (
                   <span key={t} className="mx-8 flex items-center gap-8">
                     {t}
                     <span className="text-accent-orange">✦</span>
@@ -202,16 +232,17 @@ function Index() {
               <div className="flex items-center justify-between border-b-[3px] border-charcoal bg-charcoal px-4 py-2 font-mono text-xs text-cream">
                 <span className="flex items-center gap-2">
                   <span className="inline-block h-2 w-2 bg-accent-orange animate-pulse" />
-                  DEXSCREENER / SOL / JIMOTHY
+                  DEXSCREENER / SOL / CALLDOG
                 </span>
                 <a href={DEX_URL} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-accent-orange">
                   Open <ExternalLink size={12} />
                 </a>
               </div>
-              <div className="aspect-[16/9] w-full bg-muted flex items-center justify-center">
+              <div className="aspect-[4/5] w-full bg-muted sm:aspect-[16/9]">
                 <iframe
                   title="Dexscreener chart embed"
-                  src={`https://dexscreener.com/solana/${CA}?embed=1&theme=light&trades=0&info=0`}
+                  src={`https://dexscreener.com/solana/${PAIR}?embed=1&theme=light&trades=0&info=0`}
+                  loading="lazy"
                   className="h-full w-full border-0"
                 />
               </div>
@@ -237,9 +268,7 @@ function Index() {
           <Reveal delay={100}>
             <div className="mt-8 brut-border-4 brut-shadow-lg bg-cream">
               <div className="flex flex-col gap-3 p-4 md:flex-row md:items-center md:gap-4 md:p-5">
-                <code className="flex-1 overflow-x-auto whitespace-nowrap font-mono text-sm md:text-base text-charcoal">
-                  {CA}
-                </code>
+                <code className="flex-1 overflow-x-auto whitespace-nowrap font-mono text-sm md:text-base text-charcoal">{CA}</code>
                 <button
                   onClick={copy}
                   className="brut-border brut-press flex shrink-0 items-center justify-center gap-2 bg-charcoal px-5 py-3 font-display text-cream hover:-translate-x-0.5 hover:-translate-y-0.5 hover:brut-shadow-sm active:translate-x-[4px] active:translate-y-[4px] active:shadow-none"
@@ -252,50 +281,47 @@ function Index() {
         </div>
       </section>
 
-      {/* STORY */}
-      <section id="story" className="border-b-[3px] border-charcoal">
+      {/* STATS */}
+      <section id="stats" className="border-b-[3px] border-charcoal">
         <div className="mx-auto max-w-7xl px-4 py-20 md:px-8">
           <Reveal>
-            <SectionHeader kicker="04 — Lore" title="The Story" />
+            <SectionHeader kicker="04 — Numbers" title="Community Stats" />
           </Reveal>
 
-          <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-12">
-            <Reveal delay={80} className="md:col-span-7">
-              <div className="brut-border-4 brut-shadow-lg bg-cream p-6 md:p-10">
-                <p className="font-display text-2xl leading-snug md:text-3xl">
-                  A raccoon walks into a Seattle backyard. He's shaped like a loaf.
-                </p>
-                <div className="mt-6 space-y-4 font-sans text-base text-brown-dark md:text-lg">
-                  <p>
-                    Jimothy was born with a rare congenital spine condition that shortened his body
-                    into a stout, stocky silhouette. He didn't ask for the internet. The internet
-                    found him anyway — waddling through camera traps, standing his ground, eating
-                    with intent.
-                  </p>
-                  <p>
-                    Millions of views later, Jimothy became a symbol: proof that the world rewards
-                    the ones who show up as themselves. So we did the only rational thing. We put
-                    him on-chain.
-                  </p>
-                  <p className="font-mono text-sm text-charcoal">
-                    No roadmap. No promises. Just a raccoon and a community that gets it.
-                  </p>
+          <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-12">
+            <Reveal delay={80} className="md:col-span-5">
+              <a
+                href={X_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="brut-border-4 brut-shadow-lg brut-press block h-full bg-charcoal p-8 text-cream hover:-translate-x-1 hover:-translate-y-1 active:translate-x-[6px] active:translate-y-[6px] active:shadow-none"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="brut-border flex h-14 w-14 items-center justify-center bg-accent-orange text-charcoal">
+                    <Users size={26} strokeWidth={3} />
+                  </div>
+                  <span className="font-mono text-xs uppercase tracking-widest text-accent-orange">Active on X</span>
                 </div>
-              </div>
+                <div className="mt-8 font-display text-6xl leading-none md:text-7xl">1,300+</div>
+                <div className="mt-3 font-mono text-sm text-cream/70">Members calling the dog daily</div>
+              </a>
             </Reveal>
 
-            <div className="md:col-span-5 space-y-6">
-              <Reveal delay={140}>
-                <StatCard label="Chain" value="Solana" />
-              </Reveal>
-              <Reveal delay={200}>
-                <StatCard label="Ticker" value="$JIMOTHY" />
-              </Reveal>
-              <Reveal delay={260}>
-                <StatCard label="Origin" value="Seattle, USA" accent />
-              </Reveal>
+            <div className="md:col-span-7 grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <Reveal delay={140}><StatCard label="Price" value={price} loading={isLoading} /></Reveal>
+              <Reveal delay={180}><StatCard label="Market Cap" value={usd(data?.marketCap ?? data?.fdv)} loading={isLoading} accent /></Reveal>
+              <Reveal delay={220}><StatCard label="24h Volume" value={usd(data?.volume?.h24)} loading={isLoading} /></Reveal>
+              <Reveal delay={260}><StatCard label="Liquidity" value={usd(data?.liquidity?.usd)} loading={isLoading} /></Reveal>
+              <Reveal delay={300}><StatCard label="24h Change" value={typeof change === "number" ? `${change > 0 ? "+" : ""}${change.toFixed(1)}%` : "—"} loading={isLoading} /></Reveal>
+              <Reveal delay={340}><StatCard label="24h Txns" value={txns ? txns.toLocaleString() : "—"} loading={isLoading} /></Reveal>
             </div>
           </div>
+
+          <Reveal delay={380}>
+            <p className="mt-8 font-mono text-xs uppercase tracking-widest text-brown-dark">
+              Live market data via Dexscreener · refreshes every 30s
+            </p>
+          </Reveal>
         </div>
       </section>
 
@@ -309,20 +335,28 @@ function Index() {
                 <h2 className="mt-2 font-display text-5xl leading-none md:text-7xl">Join The Pack</h2>
               </div>
               <p className="max-w-sm font-mono text-sm text-cream/70">
-                Raccoons move in numbers. Come make noise with us.
+                Everything happens on X. Come bark with us.
               </p>
             </div>
           </Reveal>
 
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
+          <div className="mt-12 grid grid-cols-1 gap-6 sm:max-w-xl">
             <Reveal delay={80}>
-              <SocialCard name="X / Twitter" handle="@jimothycoin" href="https://x.com" icon={<XIcon />} />
-            </Reveal>
-            <Reveal delay={160}>
-              <SocialCard name="Telegram" handle="t.me/jimothy" href="https://t.me" icon={<TgIcon />} />
-            </Reveal>
-            <Reveal delay={240}>
-              <SocialCard name="Discord" handle="discord.gg/jimothy" href="https://discord.com" icon={<DiscordIcon />} />
+              <a
+                href={X_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="brut-border-4 brut-shadow brut-press group block bg-cream p-6 text-charcoal hover:-translate-x-1 hover:-translate-y-1 hover:brut-shadow-lg active:translate-x-[6px] active:translate-y-[6px] active:shadow-none"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="brut-border flex h-14 w-14 items-center justify-center bg-accent-orange">
+                    <XIcon />
+                  </div>
+                  <ExternalLink size={18} strokeWidth={3} className="opacity-40 group-hover:opacity-100 transition-opacity" />
+                </div>
+                <div className="mt-6 font-display text-2xl">X / Twitter</div>
+                <div className="mt-1 font-mono text-xs text-brown-dark">@CallDogONSOLANA · 1,300+ members</div>
+              </a>
             </Reveal>
           </div>
         </div>
@@ -333,17 +367,15 @@ function Index() {
         <div className="mx-auto max-w-7xl px-4 py-10 md:px-8">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-3">
-              <div className="brut-border h-9 w-9 bg-accent-orange flex items-center justify-center font-display">J</div>
-              <span className="font-display text-lg">$JIMOTHY</span>
+              <div className="brut-border h-9 w-9 bg-accent-orange flex items-center justify-center font-display">C</div>
+              <span className="font-display text-lg">$CALLDOG</span>
             </div>
             <p className="max-w-xl font-mono text-xs leading-relaxed text-brown-dark">
-              $JIMOTHY is a community meme coin with no intrinsic value or expectation of financial
-              return. Nothing on this site is financial advice. Do your own research. Cryptocurrencies
-              are volatile and you may lose everything. Jimothy is a good boy.
+              $CALLDOG is a community meme coin with no intrinsic value or expectation of financial return.
+              Nothing on this site is financial advice. Do your own research. Crypto is volatile and you may
+              lose everything. The dog is a good boy.
             </p>
-            <div className="font-mono text-xs text-brown-dark">
-              © {new Date().getFullYear()} — Long live the short king.
-            </div>
+            <div className="font-mono text-xs text-brown-dark">© {new Date().getFullYear()} — Call the dog.</div>
           </div>
         </div>
       </footer>
@@ -363,32 +395,12 @@ function SectionHeader({ kicker, title }: { kicker: string; title: string }) {
   );
 }
 
-function StatCard({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
+function StatCard({ label, value, accent, loading }: { label: string; value: string; accent?: boolean; loading?: boolean }) {
   return (
-    <div className={`brut-border-4 brut-shadow flex items-baseline justify-between px-5 py-6 ${accent ? "bg-accent-orange" : "bg-cream"}`}>
+    <div className={`brut-border-4 brut-shadow flex h-full flex-col justify-between gap-4 px-5 py-6 ${accent ? "bg-accent-orange" : "bg-cream"}`}>
       <span className="font-mono text-xs uppercase tracking-widest">{label}</span>
-      <span className="font-display text-2xl md:text-3xl">{value}</span>
+      <span className={`font-display text-3xl leading-none ${loading ? "opacity-40" : ""}`}>{loading ? "…" : value}</span>
     </div>
-  );
-}
-
-function SocialCard({ name, handle, href, icon }: { name: string; handle: string; href: string; icon: React.ReactNode }) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noreferrer"
-      className="brut-border-4 brut-shadow brut-press group block bg-cream p-6 text-charcoal hover:-translate-x-1 hover:-translate-y-1 hover:brut-shadow-lg active:translate-x-[6px] active:translate-y-[6px] active:shadow-none"
-    >
-      <div className="flex items-center justify-between">
-        <div className="brut-border flex h-14 w-14 items-center justify-center bg-accent-orange">
-          {icon}
-        </div>
-        <ExternalLink size={18} strokeWidth={3} className="opacity-40 group-hover:opacity-100 transition-opacity" />
-      </div>
-      <div className="mt-6 font-display text-2xl">{name}</div>
-      <div className="mt-1 font-mono text-xs text-brown-dark">{handle}</div>
-    </a>
   );
 }
 
@@ -396,20 +408,6 @@ function XIcon() {
   return (
     <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden>
       <path d="M18.244 2H21l-6.52 7.45L22 22h-6.945l-4.79-6.26L4.7 22H2l7-8L2 2h7.08l4.35 5.75L18.244 2Zm-1.22 18h1.63L7.06 4H5.31l11.714 16Z" />
-    </svg>
-  );
-}
-function TgIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden>
-      <path d="M9.04 15.47 8.9 19.4c.44 0 .63-.19.86-.42l2.06-1.97 4.28 3.14c.79.44 1.35.21 1.55-.72l2.81-13.17c.28-1.19-.43-1.66-1.19-1.38L2.62 9.5c-1.16.45-1.14 1.1-.19 1.4l4.36 1.36 10.12-6.38c.48-.29.92-.13.56.18" />
-    </svg>
-  );
-}
-function DiscordIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden>
-      <path d="M20.317 4.369A19.79 19.79 0 0 0 16.558 3l-.24.42a17.14 17.14 0 0 0-4.635 0L11.44 3a19.79 19.79 0 0 0-3.76 1.369C3.677 9.055 2.9 13.62 3.29 18.115a19.9 19.9 0 0 0 5.99 3.03l.48-.72c-.99-.36-1.93-.81-2.82-1.35.24-.18.48-.36.7-.54 5.4 2.49 11.24 2.49 16.58 0 .22.19.46.37.7.54-.9.54-1.84.99-2.82 1.35l.48.72a19.9 19.9 0 0 0 5.99-3.03c.5-5.25-.87-9.78-3.24-13.746ZM9.53 15.33c-1.18 0-2.15-1.09-2.15-2.42s.95-2.43 2.15-2.43 2.17 1.1 2.15 2.43c0 1.33-.96 2.42-2.15 2.42Zm4.94 0c-1.18 0-2.15-1.09-2.15-2.42s.95-2.43 2.15-2.43c1.19 0 2.17 1.1 2.15 2.43 0 1.33-.96 2.42-2.15 2.42Z" />
     </svg>
   );
 }
