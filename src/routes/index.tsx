@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Check, Copy, ExternalLink, LineChart, ShoppingCart, Users } from "lucide-react";
-import mascot from "@/assets/calldog-mascot.jpg";
+import mascot from "@/assets/calldog-mascot.jpg.asset.json";
 
 const CA = "AF2DcASwJcXPUGtJhXsmHZupFh9BargcehnxiD8GVbd8";
 const PAIR = "J3KKzfyLQ7MYjFvayKGgCDtxbPYRfhPcynEXPcu3eYGS";
@@ -191,7 +191,7 @@ function Index() {
             <Reveal delay={120}>
               <div className="relative mx-auto w-full max-w-md">
                 <div className="brut-border-4 brut-shadow-lg bg-accent-orange p-2 animate-wobble">
-                  <img src={mascot} alt="CALLDOG mascot" width={1024} height={1024} className="block h-auto w-full" />
+                  <img src={mascot.url} alt="CALLDOG mascot" width={1024} height={1024} className="block h-auto w-full" />
                 </div>
                 <div className="brut-border absolute -bottom-4 -left-4 bg-charcoal px-3 py-1 font-mono text-xs text-cream rotate-[-4deg]">
                   good boy
