@@ -151,7 +151,7 @@ function Index() {
               </div>
             </Reveal>
             <Reveal delay={80}>
-              <h1 className="mt-6 font-display text-[15vw] leading-[0.85] tracking-tight md:text-[9rem]">$CALLDOG</h1>
+              <h1 className="mt-6 font-display text-[15vw] leading-[0.85] tracking-tight md:text-[6.5rem] lg:text-[8rem]">$CALLDOG</h1>
             </Reveal>
             <Reveal delay={160}>
               <p className="mt-6 max-w-xl font-display text-2xl leading-tight md:text-4xl">
