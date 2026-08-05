@@ -77,15 +77,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "$CALLDOG — Hello Yes This Is Dog" },
-      { name: "description", content: "$CALLDOG is a dog-themed community meme coin on Solana. Live chart, contract address, real-time stats and a 1300+ strong X community." },
-      { name: "author", content: "CALLDOG Community" },
-      { property: "og:title", content: "$CALLDOG — Hello Yes This Is Dog" },
-      { property: "og:description", content: "$CALLDOG is a dog-themed community meme coin on Solana. Live chart, contract address, real-time stats and a 1300+ strong X community." },
+      { title: "$PATTERN — The Pattern Is Clear Now" },
+      { name: "description", content: "Pattern Recognition on Solana. Live chart, real-time stats, verified contract address and the community that saw it coming." },
+      { name: "author", content: "Pattern Recognition Community" },
+      { property: "og:title", content: "$PATTERN — The Pattern Is Clear Now" },
+      { property: "og:description", content: "Pattern Recognition on Solana. Live chart, real-time stats, verified contract address and the community that saw it coming." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "$CALLDOG — Hello Yes This Is Dog" },
-      { name: "twitter:description", content: "$CALLDOG is a dog-themed community meme coin on Solana. Live chart, contract address, real-time stats and a 1300+ strong X community." },
+      { name: "twitter:title", content: "$PATTERN — The Pattern Is Clear Now" },
+      { name: "twitter:description", content: "Pattern Recognition on Solana. Live chart, real-time stats, verified contract address and the community that saw it coming." },
     ],
 
     links: [
