@@ -1,6 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Check, Copy, Gauge, Layers, PackageCheck, Send } from "lucide-react";
+import shotJimothy from "@/assets/case-jimothy.jpg.asset.json";
+import shotCalldog from "@/assets/case-calldog.jpg.asset.json";
+import shotPattern from "@/assets/case-pattern.jpg.asset.json";
+import shotTomochi from "@/assets/case-tomochi.jpg.asset.json";
 
 const X_URL = "https://x.com/impeccable_477";
 const X_HANDLE = "@impeccable_477";
@@ -72,7 +76,7 @@ type Project = {
   concept: string;
   style: string;
   tags: string[];
-  preview: React.ReactNode;
+  shot: string;
 };
 
 const PROJECTS: Project[] = [
@@ -82,7 +86,7 @@ const PROJECTS: Project[] = [
     concept: "Homepage + live chart hub for a viral Seattle raccoon meme coin.",
     style: "Neubrutalist — thick black borders, hard offset shadows, earthy charcoal & orange.",
     tags: ["Brutalist", "Landing page", "Live chart"],
-    preview: <BrutalPreview base="#e8e2d4" ink="#141210" accent="#ef7722" label="JIMOTHY" />,
+    shot: shotJimothy.url,
   },
   {
     name: "CALLDOG",
@@ -90,7 +94,7 @@ const PROJECTS: Project[] = [
     concept: "Community hub with real-time market stats for a dog-themed Solana coin.",
     style: "Neubrutalist — tan, black and a loud orange accent, raw grid rhythm.",
     tags: ["Brutalist", "Realtime stats", "Community"],
-    preview: <BrutalPreview base="#e5d3b3" ink="#100f0d" accent="#f04a20" label="CALLDOG" />,
+    shot: shotCalldog.url,
   },
   {
     name: "Pattern Recognition",
@@ -98,7 +102,7 @@ const PROJECTS: Project[] = [
     concept: "Signal-themed hub built around a creator's 'recognize the pattern' narrative.",
     style: "Brutalist with scanline, grid and glitch motifs — bone, black, forest green + amber.",
     tags: ["Brutalist", "Motion", "Narrative"],
-    preview: <PatternPreview />,
+    shot: shotPattern.url,
   },
   {
     name: "Tomochi",
@@ -106,7 +110,7 @@ const PROJECTS: Project[] = [
     concept: "Character-IP hub for an 18-month-old brand with 130K+ cross-platform reach.",
     style: "Soft kawaii — pastel palette, rounded cards, gentle shadows and float animation.",
     tags: ["Kawaii", "Character IP", "Gallery"],
-    preview: <KawaiiPreview />,
+    shot: shotTomochi.url,
   },
 ];
 
@@ -323,9 +327,14 @@ function Index() {
             <Reveal key={p.name} delay={i * 90}>
               <article className="lift group h-full overflow-hidden rounded-xl border border-hairline bg-surface hover:-translate-y-1.5 hover:border-primary/40">
                 <div className="relative aspect-[16/10] overflow-hidden border-b border-hairline">
-                  <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-[1.03]">
-                    {p.preview}
-                  </div>
+                  <img
+                    src={p.shot}
+                    alt={`${p.name} website homepage designed and built by Impeccable`}
+                    loading="lazy"
+                    width={1440}
+                    height={900}
+                    className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                  />
                 </div>
                 <div className="p-6">
                   <div className="flex items-start justify-between gap-4">
@@ -468,144 +477,6 @@ function Section({
       </Reveal>
       <div className="mt-12">{children}</div>
     </section>
-  );
-}
-
-/* --- Stylized project previews (design-language mockups) --- */
-
-function BrutalPreview({
-  base,
-  ink,
-  accent,
-  label,
-}: {
-  base: string;
-  ink: string;
-  accent: string;
-  label: string;
-}) {
-  return (
-    <div className="h-full w-full p-5" style={{ background: base }}>
-      <div
-        className="flex h-full w-full flex-col justify-between p-4"
-        style={{ background: base, border: `4px solid ${ink}`, boxShadow: `8px 8px 0 0 ${ink}` }}
-      >
-        <div className="flex items-center gap-2">
-          <span style={{ background: accent, border: `3px solid ${ink}` }} className="h-4 w-4" />
-          <span
-            className="px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest"
-            style={{ background: ink, color: base }}
-          >
-            live on solana
-          </span>
-        </div>
-        <div
-          className="font-display text-[clamp(1.5rem,6vw,2.6rem)] font-bold leading-none tracking-tight"
-          style={{ color: ink }}
-        >
-          ${label}
-        </div>
-        <div className="flex gap-2">
-          <span
-            className="px-3 py-1.5 font-mono text-[10px] font-bold uppercase"
-            style={{ background: accent, color: ink, border: `3px solid ${ink}` }}
-          >
-            Buy
-          </span>
-          <span
-            className="px-3 py-1.5 font-mono text-[10px] font-bold uppercase"
-            style={{ background: base, color: ink, border: `3px solid ${ink}` }}
-          >
-            Chart
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function PatternPreview() {
-  const ink = "#0b0b0b";
-  const bone = "#e9e6dc";
-  const green = "#4da25f";
-  const amber = "#e0a02a";
-  return (
-    <div className="relative h-full w-full overflow-hidden p-5" style={{ background: ink }}>
-      <div
-        className="absolute inset-0 opacity-30"
-        style={{
-          backgroundImage: `repeating-linear-gradient(0deg, ${green}33 0 1px, transparent 1px 6px)`,
-        }}
-      />
-      <div
-        className="relative flex h-full w-full flex-col justify-between p-4"
-        style={{ border: `4px solid ${bone}`, boxShadow: `8px 8px 0 0 ${green}` }}
-      >
-        <div className="flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.2em]" style={{ color: amber }}>
-          <span>scanning…</span>
-          <span style={{ color: green }}>● signal</span>
-        </div>
-        <div
-          className="font-display text-[clamp(1.4rem,5.5vw,2.4rem)] font-bold leading-none tracking-tight"
-          style={{ color: bone }}
-        >
-          $PATTERN
-        </div>
-        <div className="flex gap-1.5">
-          {[green, amber, bone, green, amber, bone, green].map((c, i) => (
-            <span key={i} className="h-2 flex-1" style={{ background: c, opacity: i % 3 === 0 ? 1 : 0.45 }} />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function KawaiiPreview() {
-  return (
-    <div className="relative h-full w-full p-5" style={{ background: "#fdf4e6" }}>
-      <div
-        className="absolute inset-0 opacity-60"
-        style={{
-          backgroundImage: "radial-gradient(#e9c7b8 2px, transparent 2.2px)",
-          backgroundSize: "20px 20px",
-        }}
-      />
-      <div
-        className="relative flex h-full w-full flex-col justify-between rounded-3xl p-5"
-        style={{
-          background: "#fffdf9",
-          border: "2px solid #efd9c7",
-          boxShadow: "0 18px 34px -20px rgba(120,80,50,0.6)",
-        }}
-      >
-        <div className="flex items-center gap-2">
-          <span className="h-7 w-7 rounded-full" style={{ background: "#f5b98a" }} />
-          <span className="h-7 w-7 rounded-full" style={{ background: "#d8c2ef" }} />
-          <span className="h-7 w-7 rounded-full" style={{ background: "#bfe6cd" }} />
-        </div>
-        <div
-          className="font-display text-[clamp(1.4rem,5.5vw,2.3rem)] font-bold tracking-tight"
-          style={{ color: "#6b4a33" }}
-        >
-          $tomochi
-        </div>
-        <div className="flex gap-2">
-          <span
-            className="rounded-full px-3 py-1.5 text-[10px] font-bold"
-            style={{ background: "#f59b52", color: "#fffdf9" }}
-          >
-            Buy on Pump.fun
-          </span>
-          <span
-            className="rounded-full px-3 py-1.5 text-[10px] font-bold"
-            style={{ background: "#fbe6d4", color: "#6b4a33" }}
-          >
-            Chart
-          </span>
-        </div>
-      </div>
-    </div>
   );
 }
 
