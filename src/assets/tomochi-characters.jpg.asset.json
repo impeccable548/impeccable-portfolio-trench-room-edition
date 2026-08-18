@@ -1,11 +1,11 @@
 {
-  "version": 1,
   "asset_id": "a544a8bb-48ff-4b7b-8fb7-74b834870502",
-  "project_id": "4adbab71-1ee3-416f-a2a9-466d15fd42be",
-  "url": "/__l5e/assets-v1/a544a8bb-48ff-4b7b-8fb7-74b834870502/tomochi-characters.jpg",
-  "r2_key": "a/v1/4adbab71-1ee3-416f-a2a9-466d15fd42be/a544a8bb-48ff-4b7b-8fb7-74b834870502/tomochi-characters.jpg",
-  "original_filename": "tomochi-characters.jpg",
-  "size": 73525,
   "content_type": "image/jpeg",
-  "created_at": "2026-08-07T16:26:32Z"
+  "created_at": "2026-08-07T16:26:32Z",
+  "original_filename": "tomochi-characters.jpg",
+  "project_id": "819e6008-6481-4846-ba1b-1f16fe9f020b",
+  "r2_key": "a/v1/819e6008-6481-4846-ba1b-1f16fe9f020b/a544a8bb-48ff-4b7b-8fb7-74b834870502/tomochi-characters.jpg",
+  "size": 73525,
+  "url": "/__l5e/assets-v1/a544a8bb-48ff-4b7b-8fb7-74b834870502/tomochi-characters.jpg",
+  "version": 1
 }

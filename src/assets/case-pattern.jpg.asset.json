@@ -1,11 +1,11 @@
 {
-  "version": 1,
   "asset_id": "0ca9ceb1-65ad-4a4c-816e-1580e3d0dba0",
-  "project_id": "4adbab71-1ee3-416f-a2a9-466d15fd42be",
-  "url": "/__l5e/assets-v1/0ca9ceb1-65ad-4a4c-816e-1580e3d0dba0/case-pattern.jpg",
-  "r2_key": "a/v1/4adbab71-1ee3-416f-a2a9-466d15fd42be/0ca9ceb1-65ad-4a4c-816e-1580e3d0dba0/case-pattern.jpg",
-  "original_filename": "case-pattern.jpg",
-  "size": 235240,
   "content_type": "image/jpeg",
-  "created_at": "2026-08-12T01:05:58Z"
+  "created_at": "2026-08-12T01:05:58Z",
+  "original_filename": "case-pattern.jpg",
+  "project_id": "819e6008-6481-4846-ba1b-1f16fe9f020b",
+  "r2_key": "a/v1/819e6008-6481-4846-ba1b-1f16fe9f020b/0ca9ceb1-65ad-4a4c-816e-1580e3d0dba0/case-pattern.jpg",
+  "size": 235240,
+  "url": "/__l5e/assets-v1/0ca9ceb1-65ad-4a4c-816e-1580e3d0dba0/case-pattern.jpg",
+  "version": 1
 }
