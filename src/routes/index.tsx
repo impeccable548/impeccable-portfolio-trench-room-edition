@@ -5,10 +5,11 @@ import shotJimothy from "@/assets/case-jimothy.jpg.asset.json";
 import shotCalldog from "@/assets/case-calldog.jpg.asset.json";
 import shotPattern from "@/assets/case-pattern.jpg.asset.json";
 import shotTomochi from "@/assets/case-tomochi.jpg.asset.json";
+import avatar from "@/assets/impeccable-avatar.jpg.asset.json";
 
 const X_URL = "https://x.com/impeccable_477";
 const X_HANDLE = "@impeccable_477";
-const TG_URL = "https://t.me/impeccable_477";
+const TG_URL = "https://t.me/Impecc_able";
 
 const TITLE = "Impeccable — Web3 Full-Stack Developer & Landing Page Builder";
 const DESC =
@@ -160,9 +161,13 @@ function Index() {
       >
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 md:px-8">
           <a href="#top" className="group flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-md bg-primary font-display text-sm font-bold text-primary-foreground">
-              I
-            </span>
+            <img
+              src={avatar.url}
+              alt="Impeccable avatar"
+              width={32}
+              height={32}
+              className="h-8 w-8 rounded-full object-cover ring-1 ring-hairline transition group-hover:ring-primary/60"
+            />
             <span className="font-display text-base font-bold tracking-tight">Impeccable</span>
           </a>
 
@@ -431,9 +436,13 @@ function Index() {
       <footer className="border-t border-hairline">
         <div className="mx-auto flex max-w-6xl flex-col gap-5 px-5 py-10 md:flex-row md:items-center md:justify-between md:px-8">
           <div className="flex items-center gap-2.5">
-            <span className="flex h-7 w-7 items-center justify-center rounded-md bg-primary font-display text-xs font-bold text-primary-foreground">
-              I
-            </span>
+            <img
+              src={avatar.url}
+              alt="Impeccable avatar"
+              width={28}
+              height={28}
+              className="h-7 w-7 rounded-full object-cover ring-1 ring-hairline"
+            />
             <span className="font-display text-sm font-bold tracking-tight">Impeccable</span>
           </div>
           <p className="max-w-md text-xs leading-relaxed text-muted-foreground">
