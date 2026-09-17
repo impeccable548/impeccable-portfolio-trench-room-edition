@@ -242,7 +242,7 @@ function Index() {
 
           <dl className="mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-hairline bg-hairline sm:grid-cols-4">
             {[
-              ["4+", "Projects shipped"],
+              ["4+", "Web3 homepage concepts"],
               ["< 24h", "Concept to live"],
               ["100%", "Code ownership"],
               ["Solana", "Ecosystem focus"],
