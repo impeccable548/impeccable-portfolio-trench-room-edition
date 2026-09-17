@@ -245,7 +245,7 @@ function Index() {
               ["4+", "Web3 homepage concepts"],
               ["< 24h", "Concept to live"],
               ["100%", "Code ownership"],
-              ["Solana", "Ecosystem focus"],
+              ["Solana +", "Primary focus + other ecosystems"],
             ].map(([k, v]) => (
               <div key={v} className="bg-surface px-5 py-6">
                 <dt className="font-display text-2xl font-bold tracking-tight md:text-3xl">{k}</dt>
