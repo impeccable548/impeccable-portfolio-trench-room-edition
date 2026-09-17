@@ -446,8 +446,8 @@ function Index() {
             <span className="font-display text-sm font-bold tracking-tight">Impeccable</span>
           </div>
           <p className="max-w-md text-xs leading-relaxed text-muted-foreground">
-            Independent developer. Project names and tickers shown are client work and are not
-            endorsements. Nothing on this site is financial advice.
+            Independent developer. Project names and tickers shown are independent concepts and
+            are not endorsements. Nothing on this site is financial advice.
           </p>
           <div className="font-mono text-xs text-muted-foreground">
             © {new Date().getFullYear()} Impeccable
