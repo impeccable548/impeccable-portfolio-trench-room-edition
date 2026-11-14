@@ -1,10 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Check, Copy, Gauge, Layers, PackageCheck, Send } from "lucide-react";
+import { cn } from "@/lib/utils";
 import shotJimothy from "@/assets/case-jimothy.jpg.asset.json";
 import shotCalldog from "@/assets/case-calldog.jpg.asset.json";
 import shotPattern from "@/assets/case-pattern.jpg.asset.json";
 import shotTomochi from "@/assets/case-tomochi.jpg.asset.json";
+import shotBer from "@/assets/case-ber.jpg.asset.json";
 import avatar from "@/assets/impeccable-avatar.jpg.asset.json";
 
 const X_URL = "https://x.com/impeccable_477";
@@ -112,6 +114,16 @@ const PROJECTS: Project[] = [
     style: "Soft kawaii — pastel palette, rounded cards, gentle shadows and float animation.",
     tags: ["Kawaii", "Character IP", "Gallery"],
     shot: shotTomochi.url,
+  },
+  {
+    name: "BER",
+    ticker: "$BER",
+    concept:
+      "Editorial brutalist hub + live trading terminal for a Solana coin built around collective perseverance.",
+    style:
+      "Modern brutalist / dark editorial — icy white, high contrast, stark typography, restrained palette.",
+    tags: ["Editorial", "Brutalist", "Trading terminal"],
+    shot: shotBer.url,
   },
 ];
 
@@ -242,7 +254,7 @@ function Index() {
 
           <dl className="mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-hairline bg-hairline sm:grid-cols-4">
             {[
-              ["4+", "Web3 homepage concepts"],
+              ["5+", "Web3 homepage concepts"],
               ["< 24h", "Concept to live"],
               ["100%", "Code ownership"],
               ["Solana +", "Primary focus + other ecosystems"],
@@ -328,46 +340,14 @@ function Index() {
       {/* WORK */}
       <Section id="work" kicker="02 — Selected work" title="Case studies">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          {PROJECTS.map((p, i) => (
-            <Reveal key={p.name} delay={i * 90}>
-              <article className="lift group h-full overflow-hidden rounded-xl border border-hairline bg-surface hover:-translate-y-1.5 hover:border-primary/40">
-                <div className="relative aspect-[16/10] overflow-hidden border-b border-hairline">
-                  <img
-                    src={p.shot}
-                    alt={`${p.name} website homepage designed and built by Impeccable`}
-                    loading="lazy"
-                    width={1440}
-                    height={900}
-                    className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
-                  />
-                </div>
-                <div className="p-6">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h3 className="font-display text-xl font-bold tracking-tight">{p.name}</h3>
-                      <div className="mt-1 font-mono text-xs text-primary">{p.ticker}</div>
-                    </div>
-                    <ArrowUpRight
-                      size={18}
-                      className="mt-1 shrink-0 text-muted-foreground opacity-40 transition-opacity group-hover:opacity-100"
-                    />
-                  </div>
-                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{p.concept}</p>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground/80">{p.style}</p>
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    {p.tags.map((t) => (
-                      <span
-                        key={t}
-                        className="rounded-full border border-hairline bg-surface-2 px-3 py-1 font-mono text-[11px] text-muted-foreground"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </article>
-            </Reveal>
-          ))}
+          {PROJECTS.map((p, i) => {
+            const featured = i === PROJECTS.length - 1 && PROJECTS.length % 2 === 1;
+            return (
+              <Reveal key={p.name} delay={i * 90} className={featured ? "lg:col-span-2" : ""}>
+                <ProjectCard p={p} featured={featured} />
+              </Reveal>
+            );
+          })}
         </div>
       </Section>
 
@@ -455,6 +435,62 @@ function Index() {
         </div>
       </footer>
     </div>
+  );
+}
+
+function ProjectCard({ p, featured = false }: { p: Project; featured?: boolean }) {
+  return (
+    <article
+      className={cn(
+        "lift group h-full overflow-hidden rounded-xl border border-hairline bg-surface hover:-translate-y-1.5 hover:border-primary/40",
+        featured && "lg:flex lg:flex-row",
+      )}
+    >
+      <div
+        className={cn(
+          "relative aspect-[16/10] overflow-hidden border-b border-hairline",
+          featured && "lg:aspect-auto lg:w-[52%] lg:shrink-0 lg:border-b-0 lg:border-r",
+        )}
+      >
+        <img
+          src={p.shot}
+          alt={`${p.name} website homepage designed and built by Impeccable`}
+          loading="lazy"
+          width={1440}
+          height={900}
+          className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+        />
+      </div>
+      <div
+        className={cn(
+          "p-6",
+          featured && "lg:flex lg:flex-1 lg:flex-col lg:justify-center",
+        )}
+      >
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h3 className="font-display text-xl font-bold tracking-tight">{p.name}</h3>
+            <div className="mt-1 font-mono text-xs text-primary">{p.ticker}</div>
+          </div>
+          <ArrowUpRight
+            size={18}
+            className="mt-1 shrink-0 text-muted-foreground opacity-40 transition-opacity group-hover:opacity-100"
+          />
+        </div>
+        <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{p.concept}</p>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground/80">{p.style}</p>
+        <div className="mt-5 flex flex-wrap gap-2">
+          {p.tags.map((t) => (
+            <span
+              key={t}
+              className="rounded-full border border-hairline bg-surface-2 px-3 py-1 font-mono text-[11px] text-muted-foreground"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+      </div>
+    </article>
   );
 }
 
